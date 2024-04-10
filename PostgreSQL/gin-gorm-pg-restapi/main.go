@@ -63,7 +63,7 @@ func getUserByID(c *gin.Context) {
 	if result.RowsAffected == 1 {
 		c.JSON(200, user)
 	} else {
-		c.JSON(200, "not found user in database")
+		c.JSON(404, "not found user in database")
 	}
 }
 
@@ -121,9 +121,9 @@ func deleteUserByID(c *gin.Context) {
 
 	if result.RowsAffected == 1 {
 		db.Delete(&user)
-		c.JSON(410, user)
+		c.JSON(200, user)
 	} else {
-		c.JSON(410, "user not found in database")
+		c.JSON(404, "user not found in database")
 	}
 }
 
