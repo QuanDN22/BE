@@ -23,6 +23,7 @@ func main() {
 	c := pb.NewGreetServiceClient(conn)
 	// go doGreetManyTimes(c)
 	// go doGreet(c)
-	doLongGreet(c)
+	// doLongGreet(c)
+	doGreetEveryone(c)
 	time.Sleep(5 * time.Second)
 }
