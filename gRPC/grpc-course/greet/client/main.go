@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -20,5 +21,7 @@ func main() {
 	defer conn.Close()
 
 	c := pb.NewGreetServiceClient(conn)
-	doGreet(c)
+	go doGreetManyTimes(c)
+	go doGreet(c)
+	time.Sleep(5 * time.Second)
 }
