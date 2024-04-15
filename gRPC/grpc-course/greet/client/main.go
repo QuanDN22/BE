@@ -21,7 +21,8 @@ func main() {
 	defer conn.Close()
 
 	c := pb.NewGreetServiceClient(conn)
-	go doGreetManyTimes(c)
-	go doGreet(c)
+	// go doGreetManyTimes(c)
+	// go doGreet(c)
+	doLongGreet(c)
 	time.Sleep(5 * time.Second)
 }
