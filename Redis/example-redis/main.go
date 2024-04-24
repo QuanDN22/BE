@@ -2,10 +2,16 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/redis/go-redis/v9"
 )
+
+type User struct {
+	Name string `json:"name"`
+	Age  int `json:"age"`
+}
 
 var ctx = context.Background()
 var redisClient *redis.Client
@@ -24,7 +30,7 @@ func connectRedis(ctx context.Context) {
 	}
 	fmt.Println(pong)
 
-    redisClient = client
+	redisClient = client
 }
 
 func setToRedis(ctx context.Context, key, val string) {
@@ -34,7 +40,7 @@ func setToRedis(ctx context.Context, key, val string) {
 	}
 }
 
-func getFromRedis(ctx context.Context, key string) string{
+func getFromRedis(ctx context.Context, key string) string {
 	val, err := redisClient.Get(ctx, key).Result()
 	if err != nil {
 		fmt.Println(err)
@@ -43,7 +49,7 @@ func getFromRedis(ctx context.Context, key string) string{
 	return val
 }
 
-func getAllKeys(ctx context.Context, key string) []string{
+func getAllKeys(ctx context.Context, key string) []string {
 	keys := []string{}
 
 	iter := redisClient.Scan(ctx, 0, key, 0).Iterator()
@@ -64,7 +70,7 @@ func main() {
 	setToRedis(ctx, "name", "redis-test")
 	setToRedis(ctx, "name2", "redis-test-2")
 
-	val := getFromRedis(ctx,"name")
+	val := getFromRedis(ctx, "name")
 	fmt.Printf("First value with name key : %s \n", val)
 
 	values := getAllKeys(ctx, "name*")
@@ -72,5 +78,33 @@ func main() {
 
 	values = getAllKeys(ctx, "")
 	fmt.Printf("All values : %v \n", values)
+
+	session := map[string]string{"name": "John", "surname": "Smith", "company": "Redis", "age": "29"}
+	for k, v := range session {
+		err := redisClient.HSet(ctx, "user-session:123", k, v).Err()
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	userSession, err := redisClient.HGetAll(ctx, "user-session:123").Result()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(userSession)
+
+	//
+	user, err := json.Marshal(User{Name: "Quan", Age: 10})
+	if err != nil {
+		panic(err)
+	}
+	err = redisClient.Set(ctx, "id1234", user, 0).Err()
+	if err != nil {
+		panic(err)
+	}
+	val, err = redisClient.Get(ctx, "id1234").Result()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(val)
 }
- 
