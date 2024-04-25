@@ -1,0 +1,5 @@
+The cmd/producer and cmd/consumer directories will contain the main application files, 
+and the pkg/models directory will store the model declarations
+
+Using sarama to establish a connection with the Kafka broker
+Using gin to handle the API endpoints for the notification system
