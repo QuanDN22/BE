@@ -1,0 +1,1 @@
+create a simple docker-compose.yml file with two services, namely zookeeper and kafka
