@@ -4,8 +4,29 @@ package helloworld;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/QuanDN22/BE/gRPC/go-grpc-gateway-helloworld/proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+       info: {
+         title: "Echo API";
+         version: "1.0";
+         description: "";
+         contact: {
+           name: "gRPC-Gateway project";
+           url: "https://github.com/grpc-ecosystem/grpc-gateway";
+           email: "none@example.com";
+         };
+         license: {
+           name: "BSD 3-Clause License";
+           url: "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE";
+         };
+       };
+       schemes: HTTPS;
+       consumes: "application/json";
+       produces: "application/json";
+     };
 
 // the greeting service definition
 service Greeter {
@@ -25,7 +46,7 @@ service Greeter {
     
     }
 
-    
+
 }
 
 message Empty{}

@@ -34,15 +34,17 @@ func main() {
 
 	// approach 2
 	gwmux := runtime.NewServeMux()
-	
+
 	dialOptions := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
-	
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
 	// Register Greeter
+	// Register gRPC server endpoint
+	// Note: Make sure the gRPC server is running properly and accessible
 	err := helloworldpb.RegisterGreeterHandlerFromEndpoint(ctx, gwmux, "0.0.0.0:8080", dialOptions)
 	if err != nil {
 		log.Fatalln("Failed to register gateway: ", err)
