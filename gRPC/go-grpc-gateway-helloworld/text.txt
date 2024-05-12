@@ -1,0 +1,3 @@
+curl -H "Content-Type: application/json" -X POST http://localhost:8090/v1/example/echo -d "{\"name\":\"hello \"}"
+{"message":"hello world"}
+

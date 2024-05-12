@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package helloworld;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/QuanDN22/BE/gRPC/go-grpc-gateway-helloworld/proto";
+
+// the greeting service definition
+service Greeter {
+    // Sends a greeting
+    rpc SayHello (HelloRequest) returns (HelloReply) {
+        option (google.api.http) = {
+            post: "/v1/example/echo"
+            body: "*"
+        };
+    }
+
+    // sends hi
+    rpc SayHi (google.protobuf.Empty) returns (HelloReply) {
+        option (google.api.http) = {
+            get: "/v1/example/hi"
+        };
+    
+    }
+
+    
+}
+
+message Empty{}
+
+// The request message containing the user's name
+message HelloRequest {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+    string message = 1;
+}
