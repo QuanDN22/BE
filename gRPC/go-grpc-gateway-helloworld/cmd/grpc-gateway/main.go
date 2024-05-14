@@ -45,16 +45,16 @@ func main() {
 	// Register Greeter
 	// Register gRPC server endpoint
 	// Note: Make sure the gRPC server is running properly and accessible
-	err := helloworldpb.RegisterGreeterHandlerFromEndpoint(ctx, gwmux, "0.0.0.0:8080", dialOptions)
+	err := helloworldpb.RegisterGreeterHandlerFromEndpoint(ctx, gwmux, "0.0.0.0:8083", dialOptions)
 	if err != nil {
 		log.Fatalln("Failed to register gateway: ", err)
 	}
 
 	gwServer := &http.Server{
-		Addr:    ":8090",
+		Addr:    ":8082",
 		Handler: gwmux,
 	}
 
-	log.Println("Serving gRPC-Gateway is running on http://0.0.0.0:8090")
+	log.Println("Serving gRPC-Gateway is running on http://0.0.0.0:8082")
 	log.Fatalln(gwServer.ListenAndServe())
 }
