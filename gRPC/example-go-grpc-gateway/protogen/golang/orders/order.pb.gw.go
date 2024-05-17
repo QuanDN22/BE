@@ -31,7 +31,7 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_Orders_AddOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrdersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Orders_AddOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrdersClient, req *http.Request, _ map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PayloadWithSingleOrder
 	var metadata runtime.ServerMetadata
 
@@ -44,7 +44,7 @@ func request_Orders_AddOrder_0(ctx context.Context, marshaler runtime.Marshaler,
 
 }
 
-func local_request_Orders_AddOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrdersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Orders_AddOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrdersServer, req *http.Request, _ map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PayloadWithSingleOrder
 	var metadata runtime.ServerMetadata
 
@@ -57,7 +57,7 @@ func local_request_Orders_AddOrder_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func request_Orders_GetOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrdersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Orders_GetOrder_0(ctx context.Context, _ runtime.Marshaler, client OrdersClient, _ *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PayloadWithOrderID
 	var metadata runtime.ServerMetadata
 
@@ -83,7 +83,7 @@ func request_Orders_GetOrder_0(ctx context.Context, marshaler runtime.Marshaler,
 
 }
 
-func local_request_Orders_GetOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrdersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Orders_GetOrder_0(ctx context.Context, _ runtime.Marshaler, server OrdersServer, _ *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PayloadWithOrderID
 	var metadata runtime.ServerMetadata
 
@@ -109,7 +109,7 @@ func local_request_Orders_GetOrder_0(ctx context.Context, marshaler runtime.Mars
 
 }
 
-func request_Orders_UpdateOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrdersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Orders_UpdateOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrdersClient, req *http.Request, _ map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PayloadWithSingleOrder
 	var metadata runtime.ServerMetadata
 
@@ -122,7 +122,7 @@ func request_Orders_UpdateOrder_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-func local_request_Orders_UpdateOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrdersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Orders_UpdateOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrdersServer, req *http.Request, _ map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PayloadWithSingleOrder
 	var metadata runtime.ServerMetadata
 
@@ -135,7 +135,7 @@ func local_request_Orders_UpdateOrder_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func request_Orders_RemoveOrder_0(ctx context.Context, marshaler runtime.Marshaler, client OrdersClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Orders_RemoveOrder_0(ctx context.Context, _ runtime.Marshaler, client OrdersClient, _ *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PayloadWithOrderID
 	var metadata runtime.ServerMetadata
 
@@ -161,7 +161,7 @@ func request_Orders_RemoveOrder_0(ctx context.Context, marshaler runtime.Marshal
 
 }
 
-func local_request_Orders_RemoveOrder_0(ctx context.Context, marshaler runtime.Marshaler, server OrdersServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Orders_RemoveOrder_0(ctx context.Context, _ runtime.Marshaler, server OrdersServer, _ *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PayloadWithOrderID
 	var metadata runtime.ServerMetadata
 
