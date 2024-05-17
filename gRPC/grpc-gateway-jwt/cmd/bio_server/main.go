@@ -25,7 +25,11 @@ type BioServer struct {
 func (s *BioServer) SayHi(ctx context.Context, _ *emptypb.Empty) (*biopb.HelloReply, error) {
 	// not having a token is now an exceptional state and we can just
 	// let the context helper panic if that happens
-	token := middleware.MustContextGetToken(ctx)
+	// token := middleware.MustContextGetToken(ctx)
+	token, err := middleware.ContextGetToken(ctx)
+	if err != nil {
+		panic(err)
+	}
 
 	// dig the roles from the claims
 	roles := token.Claims.(jwt.MapClaims)["roles"]

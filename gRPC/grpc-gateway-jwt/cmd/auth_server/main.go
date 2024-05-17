@@ -16,19 +16,23 @@ import (
 
 type AuthServer struct {
 	authpb.UnimplementedAuthServiceServer
-	// issuer *middleware.Issuer
+	issuer *middleware.Issuer
 }
 
-// func NewServer(iss *middleware.Issuer) (*AuthServer, error) {
-// 	return &AuthServer{
-// 		issuer: iss,
-// 	}, nil
-// }
+func NewServer(iss *middleware.Issuer) (*AuthServer, error) {
+	return &AuthServer{
+		issuer: iss,
+	}, nil
+}
 
 func (s *AuthServer) SayHello(ctx context.Context, in *authpb.HelloRequest) (*authpb.HelloReply, error) {
 	// not having a token is now an exceptional state and we can just
 	// let the context helper panic if that happens
-	token := middleware.MustContextGetToken(ctx)
+	// token := middleware.MustContextGetToken(ctx)
+	token, err := middleware.ContextGetToken(ctx)
+	if err != nil {
+		panic(err)
+	}
 
 	// dig the roles from the claims
 	roles := token.Claims.(jwt.MapClaims)["roles"]
@@ -44,13 +48,33 @@ func (s *AuthServer) Ping(ctx context.Context, _ *emptypb.Empty) (*authpb.HelloR
 	}, nil
 }
 
-// func (s *AuthServer) Login(ctx context.Context, in *authpb.LoginRequest) (*authpb.LoginReply, error) {
-// 	return &authpb.LoginReply{
+func (s *AuthServer) Login(ctx context.Context, in *authpb.LoginRequest) (*authpb.LoginReply, error) {
+	fmt.Printf("Login request %s, %s", in.GetUsername(), in.GetPassword())
+	if in.GetUsername() != "admin" || in.GetPassword() != "pass" {
+		return nil, fmt.Errorf("Invalid username or password")
+	}
 
-//     }, nil
-// }
+	tokenString, err := s.issuer.IssueToken("admin", []string{"admin"})
+	if err != nil {
+		return nil, err
+	}
+
+	return &authpb.LoginReply{
+		AccessToken: tokenString,
+	}, nil
+}
 
 func main() {
+	iss, err := middleware.NewIssuer("./auth.ed")
+	if err != nil {
+		log.Fatalln("Failed to create issuer: ", err)
+	}
+
+	authserver, err := NewServer(iss)
+	if err != nil {
+		log.Fatalln("Failed to create server: ", err)
+	}
+
 	mw, err := middleware.NewMiddleware(os.Args[1])
 	// mw, err := middleware.NewMiddleware("./auth.ed.pub")
 	// mw, err := middleware.NewMiddleware("./auth.pub.key")
@@ -70,7 +94,7 @@ func main() {
 		grpc.UnaryInterceptor(mw.UnaryServerInterceptor),
 	)
 	// Attach the Greeter service to the server
-	authpb.RegisterAuthServiceServer(s, &AuthServer{})
+	authpb.RegisterAuthServiceServer(s, authserver)
 
 	// Serve gRPC Server
 	log.Println("Serving gRPC on 0.0.0.0:8080")

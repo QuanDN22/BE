@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -11,15 +12,27 @@ import (
 )
 
 func (m *Middleware) UnaryServerInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	fmt.Println(info.FullMethod)
+	// check login request
+	if info.FullMethod == "/auth.AuthService/Login" {
+		fmt.Println(info.FullMethod)
+		log.Println("gRPC-middleware-server UnaryServerInterceptor - /auth.AuthService/Login")
+		return handler(ctx, req)
+	}
+
+	fmt.Println("gRPC-middleware-server UnaryServerInterceptor - /auth.AuthService/Login")
+
 	// rip the token from the metadata from the context
 	headers, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return nil, status.New(codes.Unauthenticated, "no auth provided").Err()
 	}
+
 	tokens := headers.Get("jwt")
 	if len(tokens) < 1 {
 		return nil, status.New(codes.Unauthenticated, "no auth provided").Err()
 	}
+
 	tokenString := tokens[0] // just use the first, ignore repeated headers
 
 	token, err := m.GetToken(tokenString)

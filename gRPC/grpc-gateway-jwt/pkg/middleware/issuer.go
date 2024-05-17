@@ -42,7 +42,7 @@ func (i *Issuer) IssueToken(user string, roles []string) (string, error) {
 		"aud": "api",
 		"nbf": now.Unix(),
 		"iat": now.Unix(),
-		"exp": now.Add(time.Minute).Unix(),
+		"exp": now.Add(time.Minute*3600).Unix(),
 		"iss": "http://localhost:5000",
 
 		// user is custom claim for the validated user

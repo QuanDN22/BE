@@ -7,15 +7,16 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-// middlewareContextKey is our custom type to ensure our context values are unique
-type middlewareContextKey string
+// // middlewareContextKey is our custom type to ensure our context values are unique
+// type middlewareContextKey string
 
-// tokenContextKey is the key used for a parsed token
-const tokenContextKey middlewareContextKey = "token"
+// // tokenContextKey is the key used for a parsed token
+// const tokenContextKey middlewareContextKey = "token"
 
 // ContextWithToken adds the given token to the given context
 func ContextWithToken(ctx context.Context, token *jwt.Token) context.Context {
-	return context.WithValue(ctx, tokenContextKey, token)
+	// return context.WithValue(ctx, tokenContextKey, token)
+	return context.WithValue(ctx, "token", token)
 }
 
 // ContextGetToken tries to get the token from the context
@@ -25,7 +26,9 @@ func ContextWithToken(ctx context.Context, token *jwt.Token) context.Context {
 // That would require the public key and should have been handled
 // by the process that set the token originally
 func ContextGetToken(ctx context.Context) (*jwt.Token, error) {
-	val := ctx.Value(tokenContextKey)
+	// val := ctx.Value(tokenContextKey)
+	val := ctx.Value("token")
+
 	if val == nil {
 		return nil, errors.New("no token in context")
 	}
@@ -38,13 +41,13 @@ func ContextGetToken(ctx context.Context) (*jwt.Token, error) {
 	return t, nil
 }
 
-// MustContextGetToken parses the token out of the context
-// it will panic if the token is not found
-func MustContextGetToken(ctx context.Context) *jwt.Token {
-	t, err := ContextGetToken(ctx)
-	if err != nil {
-		panic(err)
-	}
+// // MustContextGetToken parses the token out of the context
+// // it will panic if the token is not found
+// func MustContextGetToken(ctx context.Context) *jwt.Token {
+// 	t, err := ContextGetToken(ctx)
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
-	return t
-}
+// 	return t
+// }

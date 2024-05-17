@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -27,6 +28,43 @@ func NewMiddleware(publicKeyPath string) (*Middleware, error) {
 
 func (m *Middleware) HandleHTTP(h http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Check IsLoginRequest(r.Context())
+		if r.URL.Path == "/login" {
+			log.Println("HTTP SERVER middleware - /login")
+			// check basic auth
+			// _, _, ok := r.BasicAuth()
+			// if !ok {
+			// 	w.WriteHeader(http.StatusUnauthorized)
+			// 	w.Write([]byte("missing basic auth")) //nolint
+			// 	return
+			// }
+
+			// var v map[string]string
+			// err := json.NewDecoder(r.Body).Decode(&v)
+			// if err != nil {
+			// 	w.WriteHeader(http.StatusBadRequest)
+			// 	w.Write([]byte("invalid json body")) //nolint
+			// 	return
+			// }
+
+			// fmt.Println(v["username"], v["password"])
+			// if v["username"] == "" || v["password"] == "" {
+			// 	w.WriteHeader(http.StatusUnauthorized)
+			// 	w.Write([]byte("invalid credentials")) //nolint
+			// 	return
+			// }
+
+			// r.SetBasicAuth(v["username"], v["password"])
+			// // r.Header.Add("Content-Type", "application/json")
+
+			log.Printf("it is here 1")
+			h.ServeHTTP(w, r)
+			log.Printf("it is here 2")
+			return
+		}
+
+		// fmt.Println(r.URL.Path)
+
 		parts := strings.Split(r.Header.Get("Authorization"), " ")
 		if len(parts) < 2 || parts[0] != "Bearer" {
 			w.WriteHeader(http.StatusUnauthorized)
