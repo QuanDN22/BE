@@ -1,0 +1,9 @@
+openssl genpkey -algorithm ED25519 -outform pem -out auth.ed
+openssl pkey -in auth.ed -pubout > auth.ed.pub
+
+
+curl -H "Content-Type: application/json" -X POST http://localhost:8090/hello -d "{\"name\":\"hello \"}"
+
+curl -H "Content-Type: application/json" -X POST http://localhost:5000/login-auth-api -d "{\"username\":\"admin\", \"password\":\"pass\"}"
+
+eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJhcGkiLCJleHAiOjE3MTU5NTQzNTcsImlhdCI6MTcxNTk1MjU1NywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgxIiwibmJmIjoxNzE1OTUyNTU3LCJyb2xlcyI6WyJhZG1pbiIsImJhc2ljIl0sInVzZXIiOiJhZG1pbiJ9.BX1fHD-qNKTga0VWbJukXOvYlsy3NRXL2HjcKm6pqhrus0IBoMxDSPy8zFi5P1xDmOuVAVMcZ_qbSc8HkHaKBA
