@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package bio;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/QuanDN22/BE/gRPC/grpc-gateway-jwt/proto";
+
+// the greeting service definition
+service BioService {
+    // sends hi
+    rpc SayHi (google.protobuf.Empty) returns (HelloReply) {
+        option (google.api.http) = {
+            get: "/hi"
+        };
+    }
+}
+
+// The response message containing the greetings
+message HelloReply {
+    string message = 1;
+}

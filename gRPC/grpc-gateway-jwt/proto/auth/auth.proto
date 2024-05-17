@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package auth;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/QuanDN22/BE/gRPC/grpc-gateway-jwt/proto";
+
+// the greeting service definition
+service AuthService {
+    // Sends a greeting
+    rpc SayHello (HelloRequest) returns (HelloReply) {
+        option (google.api.http) = {
+            post: "/hello"
+            body: "*"
+        };
+    }
+
+    // sends hi
+    rpc Ping (google.protobuf.Empty) returns (HelloReply) {
+        option (google.api.http) = {
+            get: "/ping"
+        };
+    }
+
+    // login
+    rpc Login (LoginRequest) returns (LoginReply) {
+        option (google.api.http) = {
+            post: "/login"
+            body: "*"
+        };
+    }
+}
+
+// The request message containing the user's name
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+}
+
+// The response message containing the greetings
+message LoginReply {
+    string access_token = 1;
+}
+
+// The request message containing the user's name
+message HelloRequest {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+    string message = 1;
+}
