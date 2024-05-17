@@ -10,6 +10,8 @@ import (
 
 func main() {
 	issuer, err := middleware.NewIssuer("./auth.ed")
+	// issuer, err := middleware.NewIssuer("./auth.key")
+
 	if err != nil {
 		panic(err)
 	}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/QuanDN22/BE/gRPC/grpc-gateway-jwt/pkg/middleware"
 	authpb "github.com/QuanDN22/BE/gRPC/grpc-gateway-jwt/proto/auth"
@@ -30,7 +31,10 @@ func withLogger(h http.Handler) http.Handler {
 
 func main() {
 	// create middleware using the given public key path
-	mw, err := middleware.NewMiddleware("./auth.ed.pub")
+	mw, err := middleware.NewMiddleware(os.Args[1])
+	// mw, err := middleware.NewMiddleware("./auth.ed.pub")
+	// mw, err := middleware.NewMiddleware("./auth.pub.key")
+
 	if err != nil {
 		panic(err)
 	}

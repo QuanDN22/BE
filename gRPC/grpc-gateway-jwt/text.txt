@@ -1,6 +1,9 @@
 openssl genpkey -algorithm ED25519 -outform pem -out auth.ed
 openssl pkey -in auth.ed -pubout > auth.ed.pub
 
+openssl genpkey -algorithm ED25519 -outform pem -out auth.key
+openssl pkcs8 -in auth.key -out auth.pub.key
+
 
 curl -H "Content-Type: application/json" -X POST http://localhost:8090/hello -d "{\"name\":\"hello \"}"
 

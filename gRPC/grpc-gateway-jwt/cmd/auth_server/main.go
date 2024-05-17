@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"github.com/QuanDN22/BE/gRPC/grpc-gateway-jwt/pkg/middleware"
 	authpb "github.com/QuanDN22/BE/gRPC/grpc-gateway-jwt/proto/auth"
@@ -50,8 +51,9 @@ func (s *AuthServer) Ping(ctx context.Context, _ *emptypb.Empty) (*authpb.HelloR
 // }
 
 func main() {
-	// mw, err := middleware.NewMiddleware(os.Args[1])
-	mw, err := middleware.NewMiddleware("auth.ed.pub")
+	mw, err := middleware.NewMiddleware(os.Args[1])
+	// mw, err := middleware.NewMiddleware("./auth.ed.pub")
+	// mw, err := middleware.NewMiddleware("./auth.pub.key")
 	if err != nil {
 		log.Fatalln("Failed to create middleware: ", err)
 	}

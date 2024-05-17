@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"github.com/QuanDN22/BE/gRPC/grpc-gateway-jwt/pkg/middleware"
 	biopb "github.com/QuanDN22/BE/gRPC/grpc-gateway-jwt/proto/bio"
@@ -35,8 +36,9 @@ func (s *BioServer) SayHi(ctx context.Context, _ *emptypb.Empty) (*biopb.HelloRe
 }
 
 func main() {
-	// mw, err := middleware.NewMiddleware(os.Args[1])
-	mw, err := middleware.NewMiddleware("auth.ed.pub")
+	mw, err := middleware.NewMiddleware(os.Args[1])
+	// mw, err := middleware.NewMiddleware("./auth.ed.pub")
+	// mw, err := middleware.NewMiddleware("./auth.pub.key")
 	if err != nil {
 		log.Fatalln("Failed to create middleware: ", err)
 	}
