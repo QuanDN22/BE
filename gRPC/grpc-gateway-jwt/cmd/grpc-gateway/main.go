@@ -19,14 +19,18 @@ import (
 func withLogger(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/login" {
-			fmt.Println("it is login")
-			fmt.Printf("Run request, http_method %s and http_url ", r.Method)
+			// fmt.Println("it is login")
+			// fmt.Printf("Run request, http_method %s and http_url ", r.Method)
+			fmt.Println("1. start /login")
 			h.ServeHTTP(w, r)
+			fmt.Println("1. finish /login")
 			return
 		} else {
-			fmt.Printf("Run request, http_method %s and http_url ", r.Method)
-			fmt.Println(r.URL)
+			// fmt.Printf("Run request, http_method %s and http_url ", r.Method)
+			// fmt.Println(r.URL)
+			fmt.Println("1. start")
 			h.ServeHTTP(w, r)
+			fmt.Println("1. finish")
 			return
 		}
 	})

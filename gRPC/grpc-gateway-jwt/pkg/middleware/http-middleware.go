@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 )
@@ -30,7 +29,8 @@ func (m *Middleware) HandleHTTP(h http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Check IsLoginRequest(r.Context())
 		if r.URL.Path == "/login" {
-			log.Println("HTTP SERVER middleware - /login")
+			// log.Println("HTTP SERVER middleware - /login")
+			fmt.Println("2. start /login")
 			// check basic auth
 			// _, _, ok := r.BasicAuth()
 			// if !ok {
@@ -57,13 +57,16 @@ func (m *Middleware) HandleHTTP(h http.Handler) http.HandlerFunc {
 			// r.SetBasicAuth(v["username"], v["password"])
 			// // r.Header.Add("Content-Type", "application/json")
 
-			log.Printf("it is here 1")
+			// log.Printf("it is here 1")
 			h.ServeHTTP(w, r)
-			log.Printf("it is here 2")
+			// log.Printf("it is here 2")
+
+			fmt.Println("2. finish /login")
 			return
 		}
 
 		// fmt.Println(r.URL.Path)
+		fmt.Println("2. start")
 
 		parts := strings.Split(r.Header.Get("Authorization"), " ")
 		if len(parts) < 2 || parts[0] != "Bearer" {
@@ -83,9 +86,11 @@ func (m *Middleware) HandleHTTP(h http.Handler) http.HandlerFunc {
 		// Get a new context with the parsed token
 		ctx := ContextWithToken(r.Context(), token)
 
-		fmt.Println("* HTTP SERVER middleware validated and set set token")
+		// fmt.Println("* HTTP SERVER middleware validated and set set token")
 
 		// call the next handler with the updated context
 		h.ServeHTTP(w, r.WithContext(ctx))
+
+		fmt.Println("2. finish")
 	}
 }

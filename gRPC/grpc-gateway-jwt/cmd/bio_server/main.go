@@ -23,6 +23,7 @@ type BioServer struct {
 // }
 
 func (s *BioServer) SayHi(ctx context.Context, _ *emptypb.Empty) (*biopb.HelloReply, error) {
+	fmt.Println("5. bioServer /SayHi")
 	// not having a token is now an exceptional state and we can just
 	// let the context helper panic if that happens
 	// token := middleware.MustContextGetToken(ctx)

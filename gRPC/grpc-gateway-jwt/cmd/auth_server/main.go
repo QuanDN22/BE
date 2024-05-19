@@ -26,6 +26,7 @@ func NewServer(iss *middleware.Issuer) (*AuthServer, error) {
 }
 
 func (s *AuthServer) SayHello(ctx context.Context, in *authpb.HelloRequest) (*authpb.HelloReply, error) {
+	fmt.Println("5. server auth /sayHello")
 	// not having a token is now an exceptional state and we can just
 	// let the context helper panic if that happens
 	// token := middleware.MustContextGetToken(ctx)
@@ -43,13 +44,15 @@ func (s *AuthServer) SayHello(ctx context.Context, in *authpb.HelloRequest) (*au
 }
 
 func (s *AuthServer) Ping(ctx context.Context, _ *emptypb.Empty) (*authpb.HelloReply, error) {
+	fmt.Println("5. server auth /ping")
 	return &authpb.HelloReply{
 		Message: "Pong",
 	}, nil
 }
 
 func (s *AuthServer) Login(ctx context.Context, in *authpb.LoginRequest) (*authpb.LoginReply, error) {
-	fmt.Printf("Login request %s, %s", in.GetUsername(), in.GetPassword())
+	// fmt.Printf("Login request %s, %s", in.GetUsername(), in.GetPassword())
+	fmt.Println("5. server auth /login")
 	if in.GetUsername() != "admin" || in.GetPassword() != "pass" {
 		return nil, fmt.Errorf("Invalid username or password")
 	}

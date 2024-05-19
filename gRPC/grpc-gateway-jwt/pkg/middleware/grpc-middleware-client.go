@@ -3,7 +3,6 @@ package middleware
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
@@ -12,13 +11,16 @@ import (
 func (m *Middleware) UnaryClientInterceptor(ctx context.Context, method string, req, reply interface{}, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 	// check login request
 	if method == "/auth.AuthService/Login" {
-		log.Println("gRPC-middleware-client UnaryClientInterceptor - /auth.AuthService/Login")
+		// log.Println("gRPC-middleware-client UnaryClientInterceptor - /auth.AuthService/Login")
 		// call the invoker with everythign else untouched
+		fmt.Println("3. start /auth.AuthService/Login")
 		return invoker(ctx, method, req, reply, cc, opts...)
+		// fmt.Println("3. finish")
 	}
 
 	// fmt.Println(method)
-	fmt.Println("gRPC-middleware-client UnaryClientInterceptor")
+	// fmt.Println("gRPC-middleware-client UnaryClientInterceptor")
+	fmt.Println("3. start")
 
 	// Get the token from the context
 	token, err := ContextGetToken(ctx)
@@ -38,8 +40,9 @@ func (m *Middleware) UnaryClientInterceptor(ctx context.Context, method string, 
 
 	ctx = metadata.AppendToOutgoingContext(ctx, "jwt", token.Raw)
 
-	fmt.Println("* gRPC CLIENT middleware set token")
+	// fmt.Println("* gRPC CLIENT middleware set token")
 
 	// call the invoker with everythign else untouched
 	return invoker(ctx, method, req, reply, cc, opts...)
+	// fmt.Println("3. finish")
 }
