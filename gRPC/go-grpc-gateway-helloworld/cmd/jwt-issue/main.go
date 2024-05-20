@@ -21,4 +21,20 @@ func main() {
 	}
 
 	fmt.Println(token)
+
+	//
+
+	v, err := simplejwt.NewValidator(os.Args[2])
+	if err != nil {
+		fmt.Printf("unable to create validator: %v\n", err)
+		os.Exit(1)
+	}
+
+	token1, err := v.GetToken(token)
+	if err != nil {
+		fmt.Printf("unable to get validated token: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(token1.Claims)
 }
