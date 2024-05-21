@@ -1,4 +1,4 @@
-package main
+package producer
 
 import (
 	"context"
@@ -11,20 +11,29 @@ import (
 )
 
 // the topic and broker address are initialized as constants
-const (
-	topic         = "message-log"
-	BrokerAddress = "localhost:9092"
-)
+// const (
+// 	topic         = "message-log"
+// 	BrokerAddress = "localhost:9092"
+// )
 
-type Producer struct{}
+type Producer struct {
+	Producer *kafka.Writer
+}
 
-func (p *Producer) producer(ctx context.Context) {
+func NewProducer(ctx context.Context, BrokerAddress string, topic string) *Producer {
+	// func NewProducer(ctx context.Context) *Producer {
 	// i := 0
 	w := kafka.NewWriter(kafka.WriterConfig{
 		Brokers: []string{BrokerAddress},
 		Topic:   topic,
 	})
 
+	return &Producer{
+		Producer: w,
+	}
+}
+
+func (p *Producer) Start(ctx context.Context) {
 	for {
 		var src = rand.NewSource(time.Now().UnixNano())
 		var r = rand.New(src)
@@ -35,7 +44,7 @@ func (p *Producer) producer(ctx context.Context) {
 		// each kafka message has a key and value. The key is used
 		// to decide which partition (and consequently, which broker)
 		// the message gets published on
-		err := w.WriteMessages(ctx, kafka.Message{
+		err := p.Producer.WriteMessages(ctx, kafka.Message{
 			// Key: []byte(strconv.Itoa(i)),
 			Key: []byte(strconv.Itoa(user_id)),
 			// create an arbitrary message payload for the value
@@ -53,11 +62,6 @@ func (p *Producer) producer(ctx context.Context) {
 		msg := fmt.Sprintf(`{"user_id": %d, "status": %t}`, user_id, status)
 		fmt.Println(msg)
 		// sleep for a second
-		time.Sleep(time.Second*3)
+		time.Sleep(time.Second * 3)
 	}
-}
-
-func main() {
-	var p Producer
-	p.producer(context.Background())
 }
