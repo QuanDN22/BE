@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package http.body.example;
+
+option go_package = "github.com/QuanDN22/BE/gRPC/grpc-gateway-httpbody-message/proto";
+
+import "google/api/httpbody.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service HttpBodyExampleService {
+	rpc HelloWorld(google.protobuf.Empty) returns (google.api.HttpBody) {
+		option (google.api.http) = {
+			get: "/helloworld"
+		};
+	}
+	rpc Download(google.protobuf.Empty) returns (stream google.api.HttpBody) {
+		option (google.api.http) = {
+			get: "/download"
+		};
+	}
+	rpc Upload(stream Chunk) returns (google.api.HttpBody) {
+		option (google.api.http) = {
+			post: "/upload"
+			body: "*"
+		};
+	}
+}
+
+message Chunk {
+	bytes Content = 1;
+}
